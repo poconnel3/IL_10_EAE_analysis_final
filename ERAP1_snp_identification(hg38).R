@@ -16,30 +16,25 @@ names(snp_calls) <- c("chr", "position", "ref_allele", "end_position", "alt_alle
 #Q730 SNP. If line is printed out it is present
 {snp_calls %>%
   filter(., position == "96783148") %>%
-  filter(., alt_allele == "C") %>%
   print.table(.)
 
 #K528R SNP. If line is printed out it is present
 snp_calls %>%
   filter(., position == "96788627") %>%
-  filter(., alt_allele == "C") %>%
   print.table(.)
 
 #R725Q SNP. If line is printed out it is present
 snp_calls %>%
   filter(., position == "96783162") %>%
-  filter(., alt_allele == "T") %>%
   print.table(.)
 
 #M349V SNP. If line is printed out it is present
 snp_calls %>%
   filter(., position == "96793832") %>%
-  filter(., alt_allele == "C") %>%
   print.table(.) 
 
 #D575N SNP. If line is printed out it is present
 snp_calls %>%
   filter(., position == "96786506") %>%
-  filter(., alt_allele == "T") %>%
   print.table(.)
 }

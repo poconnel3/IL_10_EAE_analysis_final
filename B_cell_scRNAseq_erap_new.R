@@ -40,7 +40,7 @@ for (file in c(filez)){
   assign(file, seurat_obj)
 }
 
-#not all are loading in from above chekc to make sure they match
+#not all are loading in from above check to make sure they match
 list.files("./count_tables") %in% tenx_md$sample_ID  #they are
 #corrected file names again and now they all load. 
 
@@ -135,7 +135,7 @@ VlnPlot(clean.seurat, features = c("S.Score","G2M.Score"), pt.size = 0)
 saveRDS(clean.seurat, "./clean.seurat.rds")
 clean.seurat <- readRDS("./clean.seurat.rds")
 
-##-------split seurat objects back out again by study and perform intrgration----
+##-------split seurat objects back out again by study and perform integration----
 indv.list <- SplitObject(clean.seurat, split.by = "sample_ID")
 library(glmGamPoi)
 indv.list <- lapply(X = indv.list, FUN = SCTransform, method = "glmGamPoi")
@@ -185,7 +185,6 @@ feat_calc <- FetchData(object = clean.seurat, vars = c("nFeature_RNA", "Method")
 well_feat <- subset(x = clean.seurat, subset = Method == "seq_well") %>% rownames(.)
 tex_feat <- subset(x = clean.seurat, subset = Method == "TenX") %>% rownames(.)
 
-#can use this to see how many are different b/w technologies
 length(setdiff(well_feat, tex_feat)) #=0, they have the same genes
 
 
@@ -263,7 +262,7 @@ names(new.cluster.ids) <- levels(Bcell_comb.sct_1)
 Bcell_comb.sct_1 <- RenameIdents(Bcell_comb.sct_1, new.cluster.ids)
 
 
-#-----remove non-B cells and plasma cells, re-cluster/UMAP and use SingleR to predict B cell subsets-----
+#-----remove non-B cells and non-plasma cells, re-cluster/UMAP and use SingleR to predict B cell subsets-----
 upd_B <- subset(Bcell_comb.sct_1, idents = c("Plasma cells", "Put.B cells"))
 DimPlot(upd_B, label = TRUE, raster=FALSE) 
 
@@ -321,7 +320,7 @@ upd_B$cell_type_by_cluster <- factor(
   upd_B$seurat_clusters,
   levels = rownames(clust_based_class1),
   labels = clust_based_class1$labels)
-#rename some overlaping identies
+#rename some overlapping identities
 upd_B <- SetIdent(upd_B, value = "cell_type_by_cluster")
 upd_B <- RenameIdents(object = upd_B, `naive B-cells` = "Naive B cells")
 upd_B <- RenameIdents(object = upd_B, `Memory B-cells` = "Non-switched memory B cells")
@@ -619,7 +618,7 @@ EnhancedVolcano(K528R_non_class_swi_DE.MAST,lab = rownames(K528R_non_class_swi_D
 #--------------------------------------------
 
 
-#------pathway anaylsis (running in IPA)----------------
+#------pathway analysis (running in IPA)----------------
 
 #make clean pathway figs (plasma cells)
 plasma_K528R_path <-  read_xls("./plasma_K528R_path.xls") %>% as.data.frame() 
@@ -676,7 +675,7 @@ ggplot(class_swi_K528R_path, aes(x=reorder(Pathways, neg.Log.p_val), y = neg.Log
         panel.background = element_rect(fill = NA)) + labs( x="Pathways", y="-Log(p-value)") 
 
 
-#make clean pathway figs (non-swiched B cells)
+#make clean pathway figs (non-switched B cells)
 non_swi_K528R_path <-  read_xls("./non_swi_K528R_path.xls") %>% as.data.frame() 
 non_swi_K528R_path <- dplyr::rename(non_swi_K528R_path, neg.Log.p_val = `-log(p-value)`, Z_score = `z-score`, Pathways = `Ingenuity Canonical Pathways`)
 non_swi_K528R_path <-  non_swi_K528R_path %>% filter(neg.Log.p_val >= 4)
